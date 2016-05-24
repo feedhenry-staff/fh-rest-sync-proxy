@@ -32,7 +32,7 @@ describe(__filename, function () {
 
       mod.handleList(dataset, params, function (err, data) {
         expect(err).to.exist;
-        expect(err.toString()).to.contain(
+        expect(err.msg).to.contain(
           'failed to perform "list" for "dataset": oops, list error'
         );
         expect(data).to.be.null;
@@ -51,7 +51,7 @@ describe(__filename, function () {
         type: 'sync'
       };
 
-      stubs['./http'].yields(null, list);
+      stubs['./http'].yields(null, null, list);
 
       mod.handleList(dataset, params, function (err, data) {
         expect(err).to.not.exist;
@@ -60,8 +60,9 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           guid: guid,
           method: 'GET',
-          data: params,
-          path: '/' + dataset
+          params: params,
+          path: '/' + dataset,
+          timeout: 25000
         });
 
         done();
@@ -75,7 +76,7 @@ describe(__filename, function () {
         test: 'data'
       };
 
-      stubs['./http'].yields(null, item);
+      stubs['./http'].yields(null, null, item);
 
       mod.handleRead(dataset, id, function (err, data) {
         expect(err).to.not.exist;
@@ -84,7 +85,8 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           guid: guid,
           method: 'GET',
-          path: '/' + dataset + '/' + id
+          path: '/' + dataset + '/' + id,
+          timeout: 25000
         });
 
         done();
@@ -106,8 +108,9 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           guid: guid,
           method: 'PUT',
-          data: data,
-          path: '/' + dataset + '/' + id
+          params: data,
+          path: '/' + dataset + '/' + id,
+          timeout: 25000
         });
 
         done();
@@ -125,7 +128,8 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           guid: guid,
           method: 'DELETE',
-          path: '/' + dataset + '/' + id
+          path: '/' + dataset + '/' + id,
+          timeout: 25000
         });
 
         done();
@@ -139,7 +143,7 @@ describe(__filename, function () {
         key: 'value'
       };
 
-      stubs['./http'].yields(null, data);
+      stubs['./http'].yields(null, null, data);
 
       mod.handleCreate(dataset, data, function (err, data) {
         expect(err).to.not.exist;
@@ -149,7 +153,8 @@ describe(__filename, function () {
           guid: guid,
           method: 'POST',
           path: '/' + dataset,
-          data: data
+          params: data,
+          timeout: 25000
         });
 
         done();

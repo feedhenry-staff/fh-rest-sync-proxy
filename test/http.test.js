@@ -29,10 +29,10 @@ describe(__filename, function () {
   it('should return a non 200 status error', function (done) {
     stubs['fh-mbaas-api'].service.yields(null, resData, {statusCode: 500});
 
-    mod(opts, function (err, data) {
+    mod(opts, function (err, failMsg, data) {
       expect(err).to.exist;
       expect(err.toString()).to.contain(
-        'service call to guid "500" returned non 200 response: { a: \'b\' }'
+        'service call to guid "12345" returned 500 status. error: { a: \'b\' }'
       );
       expect(data).to.not.exist;
       expect(stubs['fh-mbaas-api'].service.getCall(0).args[0]).to.deep.equal(opts);
