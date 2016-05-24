@@ -57,7 +57,7 @@ describe(__filename, function () {
   it('should return data', function (done) {
     stubs['fh-mbaas-api'].service.yields(null, resData, {statusCode: 200});
 
-    mod(opts, function (err, data) {
+    mod(opts, function (err, failMsg, data) {
       expect(err).to.not.exist;
       expect(data).to.deep.equal(resData);
       expect(stubs['fh-mbaas-api'].service.getCall(0).args[0]).to.deep.equal(opts);
