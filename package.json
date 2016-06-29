@@ -12,7 +12,12 @@
     "unit": "mocha test/",
     "test": "npm run format && npm run unit && npm run cover && npm run check-coverage"
   },
-  "author": "Evan Shortiss",
+  "author": {
+    "name": "Evan Shortiss"
+  },
+  "contributors": {
+    "name": "Jim Dillon"
+  },
   "license": "MIT",
   "dependencies": {
     "fh-bunyan": "^0.1.3",

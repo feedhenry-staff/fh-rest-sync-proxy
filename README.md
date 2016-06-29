@@ -34,7 +34,8 @@ var mbaasSync = require('fh-rest-sync-proxy');
 // Create a sync object that communicates with a service
 var serviceSync = sync({
   guid: 'jsgduuQ50ZtF6iR3xuaacGvn',
-  timeout: 15000
+  timeout: 15000,
+  pathToPrepend: '/path-to-my/dataset'  //This will handle nested RESTful APIs
 });
 
 var syncOpts = {
