@@ -36,8 +36,7 @@ var mbaasSync = require('fh-rest-sync-proxy');
 // Create a sync object that communicates with a service
 var serviceSync = sync({
   guid: 'jsgduuQ50ZtF6iR3xuaacGvn',
-  timeout: 15000,
-  pathToPrepend: 'path-to-my/data-set' // Remove property for a non nested API
+  timeout: 15000
 });
 
 var syncOpts = {
@@ -86,7 +85,9 @@ app.use(mbaasExpress.errorHandler());
 var serviceSync = mbaasSync({
   guid: 'jsgduuQ50ZtF6iR3xuaacGvn',
   timeout: 15000,
-  pathToPrepend: 'path-to-nested-data-set' // remove property for a non nested API
+
+  // remove property for a non nested API, e.g /path-to-nested-data-set/orders, vs. /orders
+  pathToPrepend: 'path-to-nested-data-set'
 });
 
 var syncOpts = {
@@ -120,9 +121,38 @@ If this sounds daunting, fear not; we are working on adapters
 that can expose common backend stores in the correct format. We'll add a list
 here soon!
 
-### API Definition
+## API
+
+#### module(opts)
+Create a sync proxy instance. Supported options are:
+
+[REQUIRED] guid - appId/guid of the MBaaS Service you are making calls to
+[OPTIONAL] timeout - time to wait before considering a call to opts.guid as
+timed out
+[OPTIONAL] pathToPrepend - By default the _dataset_ passed to _initDataset_ is
+used as the URL to get data, e.g /orders, but you might need a nested path
+such as /branches/orders. If this is required place "/branches" or your
+equivalent in _opts.pathToPrepend_
+
+Module calls return an instance.
+
+#### instance.initDataset(dataset, syncOptions, callback)
+Function used to enable sync passthrough/proxy to the MBaaS identified by
+_opts.guid_ passed to _module(opts)_. Arguments:
+
+(String) dataset - The name of the dataset being exposed for sync
+(Object) syncOptions - Options for the underlying _fhMbaasApi.sync_ call.
+Detailed info [here](http://docs.feedhenry.com/v3/api/api_sync.html#api_sync-node_js_api-_fh_sync_init)
+(Function) callback - Called once initialisation is complete
+
+### Required MBaaS HTTP API Definition
+For sync calls to succeed, your HTTP API must match the structure that sync
+expects. To easily create APIs like the one below you can use
+_fh-rest-express-router_.
+
 In the below examples *dataset-name* can be anything you like, e.g "orders",
 "jobs", or "users".
+
 
 #### GET /dataset-name
 Generic list endpoint that returns an Object containing key value pairs based
@@ -211,3 +241,16 @@ Sample response:
   "lastname": "hat"
 }
 ```
+
+## Contributors
+
+* Evan Shortiss
+* Jim Dillon
+
+
+## Contributing Guide
+Open an Issue to discuss ideas/bugs or get in touch via other means if desired.
+Alternatively open a PR if you feel you have a feature/fix that does not need
+significant discussion.
+
+Be sure that running `npm test` passes for any PR opened!

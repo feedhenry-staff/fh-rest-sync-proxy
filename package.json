@@ -1,6 +1,6 @@
 {
   "name": "fh-rest-sync-proxy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Proxy $fh.sync calls from a client to an MBaaS Service that exposes a RESTful API",
   "main": "lib/sync.js",
   "scripts": {
@@ -33,7 +33,8 @@
     "linelint": "^1.0.0",
     "mocha": "^2.4.5",
     "proxyquire": "^1.7.9",
-    "sinon": "^1.17.4"
+    "sinon": "^1.17.4",
+    "fh-mbaas-api": ">=5.0.0"
   },
   "peerDependencies": {
     "fh-mbaas-api": ">=5.0.0"
