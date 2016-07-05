@@ -1,5 +1,7 @@
 # fh-sync-mbaas-proxy
 
+[![Circle CI](https://circleci.com/gh/feedhenry-staff/fh-rest-sync-proxy/tree/master.svg?style=svg)](https://circleci.com/gh/feedhenry-staff/fh-rest-sync-proxy/tree/master)
+
 Minimalist FH.Sync integrations, from a Cloud Application, that retrieve data
 from a RESTful API running on a Red Hat Mobile MBaaS Service.
 
