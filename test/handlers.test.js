@@ -31,11 +31,12 @@ describe(__filename, function () {
       };
 
       stubs['./http'].yields(new Error('oops, list error'), null);
+      stubs['./build-route'].returns(dataset);
 
       mod.handleList(dataset, params, function (err, data) {
         expect(err).to.exist;
         expect(err.msg).to.contain(
-          'failed to perform "list" for "dataset" prepend "": oops, list error'
+          'failed to perform "list" for dataset "dataset" using endpoint "dataset": oops, list error'
         );
         expect(data).to.be.null;
 
