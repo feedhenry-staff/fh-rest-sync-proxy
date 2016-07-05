@@ -21,7 +21,7 @@ This module is not yet published to npm, but you can install from GitHub as
 shown below. (Only tested using npm CLI version 3)
 
 ```
-npm install feedhenry-staff/fh-sync-mbaas-proxy
+npm install feedhenry-staff/fh-rest-sync-proxy
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ This example initialises your Cloud Application so that it can serve FH.Sync
 calls for a Client Application requesting the dataset "orders".
 
 ```js
-var mbaasSync = require('fh-sync-mbaas-proxy');
+var mbaasSync = require('fh-rest-sync-proxy');
 
 // Create a sync object that communicates with a service
 var serviceSync = sync({
@@ -62,7 +62,7 @@ var express = require('express')
   , mbaasApi = require('fh-mbaas-api')
   , mbaasExpress = mbaasApi.mbaasExpress()
   , app = module.exports = express()
-  , mbaasSync = require('fh-sync-mbaas-proxy')
+  , mbaasSync = require('fh-rest-sync-proxy')
   , log = require('fh-bunyan').getLogger(__filename);
 
 log.info('starting application');
