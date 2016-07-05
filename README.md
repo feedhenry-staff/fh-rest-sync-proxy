@@ -1,4 +1,4 @@
-# fh-sync-mbaas-proxy
+# fh-rest-sync-proxy
 
 [![Circle CI](https://circleci.com/gh/feedhenry-staff/fh-rest-sync-proxy/tree/master.svg?style=svg)](https://circleci.com/gh/feedhenry-staff/fh-rest-sync-proxy/tree/master)
 
@@ -36,7 +36,8 @@ var mbaasSync = require('fh-rest-sync-proxy');
 // Create a sync object that communicates with a service
 var serviceSync = sync({
   guid: 'jsgduuQ50ZtF6iR3xuaacGvn',
-  timeout: 15000
+  timeout: 15000,
+  pathToPrepend: 'path-to-my/data-set' // Remove property for a non nested API
 });
 
 var syncOpts = {
@@ -84,7 +85,8 @@ app.use(mbaasExpress.errorHandler());
 // Create a sync object that communicates with a service
 var serviceSync = mbaasSync({
   guid: 'jsgduuQ50ZtF6iR3xuaacGvn',
-  timeout: 15000
+  timeout: 15000,
+  pathToPrepend: 'path-to-nested-data-set' // remove property for a non nested API
 });
 
 var syncOpts = {

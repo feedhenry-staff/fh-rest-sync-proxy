@@ -7,6 +7,7 @@ var sinon = require('sinon')
 describe(__filename, function () {
 
   var mod;
+  var simpleMod;
   var stubs;
   var id = 'abc';
   var guid = '12345';
@@ -14,7 +15,8 @@ describe(__filename, function () {
 
   beforeEach(function () {
     stubs = {
-      './http': sinon.stub()
+      './http': sinon.stub(),
+      './build-route': sinon.stub()
     };
 
     mod = proxyquire('../lib/handlers', stubs)(dataset, {
@@ -29,11 +31,12 @@ describe(__filename, function () {
       };
 
       stubs['./http'].yields(new Error('oops, list error'), null);
+      stubs['./build-route'].returns(dataset);
 
       mod.handleList(dataset, params, function (err, data) {
         expect(err).to.exist;
         expect(err.msg).to.contain(
-          'failed to perform "list" for "dataset": oops, list error'
+          'failed to perform "list" for dataset "dataset" using endpoint "dataset": oops, list error'
         );
         expect(data).to.be.null;
 
@@ -52,6 +55,7 @@ describe(__filename, function () {
       };
 
       stubs['./http'].yields(null, null, list);
+      stubs['./build-route'].returns(dataset);
 
       mod.handleList(dataset, params, function (err, data) {
         expect(err).to.not.exist;
@@ -61,13 +65,14 @@ describe(__filename, function () {
           guid: guid,
           method: 'GET',
           params: params,
-          path: '/' + dataset,
+          path: dataset,
           timeout: 25000
         });
 
         done();
       });
     });
+
   });
 
   describe('#handleRead', function () {
@@ -77,6 +82,7 @@ describe(__filename, function () {
       };
 
       stubs['./http'].yields(null, null, item);
+      stubs['./build-route'].returns(dataset);
 
       mod.handleRead(dataset, id, function (err, data) {
         expect(err).to.not.exist;
@@ -85,7 +91,7 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           guid: guid,
           method: 'GET',
-          path: '/' + dataset + '/' + id,
+          path: dataset + '/' + id,
           timeout: 25000
         });
 
@@ -93,6 +99,7 @@ describe(__filename, function () {
       });
     });
   });
+
 
   describe('#handleUpdate', function () {
     it('should send an update for an existing item', function (done) {
@@ -101,6 +108,7 @@ describe(__filename, function () {
       };
 
       stubs['./http'].yields(null);
+      stubs['./build-route'].returns(dataset);
 
       mod.handleUpdate(dataset, id, data, function (err) {
         expect(err).to.not.exist;
@@ -109,7 +117,7 @@ describe(__filename, function () {
           guid: guid,
           method: 'PUT',
           params: data,
-          path: '/' + dataset + '/' + id,
+          path: dataset + '/' + id,
           timeout: 25000
         });
 
@@ -118,9 +126,11 @@ describe(__filename, function () {
     });
   });
 
+
   describe('#handleDelete', function () {
-    it('should', function (done) {
+    it('should delete a record', function (done) {
       stubs['./http'].yields(null);
+      stubs['./build-route'].returns(dataset);
 
       mod.handleDelete(dataset, id, function (err) {
         expect(err).to.not.exist;
@@ -128,7 +138,7 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           guid: guid,
           method: 'DELETE',
-          path: '/' + dataset + '/' + id,
+          path: dataset + '/' + id,
           timeout: 25000
         });
 
@@ -138,12 +148,13 @@ describe(__filename, function () {
   });
 
   describe('#handleCreate', function () {
-    it('should', function (done) {
+    it('should create a record', function (done) {
       var data = {
         key: 'value'
       };
 
       stubs['./http'].yields(null, null, data);
+      stubs['./build-route'].returns(dataset);
 
       mod.handleCreate(dataset, data, function (err, data) {
         expect(err).to.not.exist;
@@ -152,7 +163,7 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           guid: guid,
           method: 'POST',
-          path: '/' + dataset,
+          path: dataset,
           params: data,
           timeout: 25000
         });
@@ -161,6 +172,5 @@ describe(__filename, function () {
       });
     });
   });
-
 
 });
