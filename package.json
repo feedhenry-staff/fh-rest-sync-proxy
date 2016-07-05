@@ -6,7 +6,7 @@
   "scripts": {
     "linelint": "linelint $(ls lib/*.js)",
     "jshint": "jshint $(ls lib/*.js)",
-    "check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "check-coverage": "istanbul check-coverage --statements 98 --branches 100 --functions 100 --lines 98",
     "cover": "istanbul cover -x *.test.js _mocha test/",
     "format": "npm run linelint && npm run jshint",
     "unit": "mocha test/",
@@ -15,12 +15,15 @@
   "author": {
     "name": "Evan Shortiss"
   },
-  "contributors": {
-    "name": "Jim Dillon"
-  },
+  "contributors": [
+    {
+      "name": "Jim Dillon"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "fh-bunyan": "^0.1.3",
+    "url-join": "^1.1.0",
     "verror": "^1.6.1"
   },
   "devDependencies": {

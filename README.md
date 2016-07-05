@@ -1,4 +1,4 @@
-# fh-sync-mbaas-proxy
+# fh-rest-sync-proxy
 
 Minimalist FH.Sync integrations, from a Cloud Application, that retrieve data
 from a RESTful API running on a Red Hat Mobile MBaaS Service.
@@ -35,7 +35,7 @@ var mbaasSync = require('fh-rest-sync-proxy');
 var serviceSync = sync({
   guid: 'jsgduuQ50ZtF6iR3xuaacGvn',
   timeout: 15000,
-  pathToPrepend: '/path-to-my/dataset'  //This will handle nested RESTful APIs
+  pathToPrepend: 'path-to-my/data-set' // Remove property for a non nested API
 });
 
 var syncOpts = {
@@ -83,7 +83,8 @@ app.use(mbaasExpress.errorHandler());
 // Create a sync object that communicates with a service
 var serviceSync = mbaasSync({
   guid: 'jsgduuQ50ZtF6iR3xuaacGvn',
-  timeout: 15000
+  timeout: 15000,
+  pathToPrepend: 'path-to-nested-data-set' // remove property for a non nested API
 });
 
 var syncOpts = {
