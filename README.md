@@ -31,7 +31,7 @@ This example initialises your Cloud Application so that it can serve FH.Sync
 calls for a Client Application requesting the dataset "orders".
 
 ```js
-var mbaasSync = require('fh-rest-sync-proxy');
+var sync = require('fh-rest-sync-proxy');
 
 // Create a sync object that communicates with a service
 var serviceSync = sync({
@@ -45,7 +45,7 @@ var syncOpts = {
   logLevel: 'error'
 };
 
-// Intialise a tickets dataset. Any sync calls for "tickets" will be
+// Intialise an orders dataset. Any sync calls for "orders" will be
 // routed to the MBaaS Service with guid "jsgduuQ50ZtF6iR3xuaacGvn"
 serviceSync.initDataset('orders', syncOpts, function (err) {
   if (err) throw err; // Throw error, or retry init of sync
