@@ -10,19 +10,19 @@ Essentially this module automatically implements the *sync.handleList*,
 *sync.handleRead*, etc. for you.
 
 ## Install
-To use this module you must have fh-mbaas-api version 5.0.0 or higher installed
+
+_NOTE: If you are using fh-mbaas-api v6 or lower you must use the 0.x version of
+this module. fh-mbaas-api v7 and v8 are not supported._
+
+To use this module you must have fh-mbaas-api version 9.0.0 or higher installed
 in your package.json. Install example is below.
 
 ```
-npm install fh-mbaas-api@5.X --save
+npm install fh-mbaas-api@9 --save
+
+npm install fh-rest-sync-proxy --save
 ```
 
-This module is not yet published to npm, but you can install from GitHub as
-shown below. (Only tested using npm CLI version 3)
-
-```
-npm install feedhenry-staff/fh-rest-sync-proxy
-```
 
 ## Usage
 

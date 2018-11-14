@@ -1,6 +1,6 @@
 {
   "name": "fh-rest-sync-proxy",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Proxy $fh.sync calls from a client to an MBaaS Service that exposes a RESTful API",
   "main": "lib/sync.js",
   "scripts": {
