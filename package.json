@@ -4,13 +4,12 @@
   "description": "Proxy $fh.sync calls from a client to an MBaaS Service that exposes a RESTful API",
   "main": "lib/sync.js",
   "scripts": {
-    "linelint": "linelint $(ls lib/*.js)",
-    "jshint": "jshint $(ls lib/*.js)",
+    "format": "prettier --write --no-semi --single-quote lib/*.js test/*.js",
     "check-coverage": "istanbul check-coverage --statements 98 --branches 100 --functions 100 --lines 98",
     "cover": "istanbul cover -x *.test.js _mocha test/",
-    "format": "npm run linelint && npm run jshint",
+    "precommit": "npm run format && git add .",
     "unit": "mocha test/",
-    "test": "npm run format && npm run unit && npm run cover && npm run check-coverage"
+    "test": "npm run unit && npm run cover && npm run check-coverage"
   },
   "author": {
     "name": "Evan Shortiss"
@@ -22,21 +21,22 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "fh-bunyan": "^0.2.0",
-    "url-join": "^1.1.0",
-    "verror": "^1.6.1"
+    "fh-bunyan": "~0.3.0",
+    "url-join": "~1.1.0",
+    "verror": "~1.10.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "istanbul": "^0.4.3",
+    "fh-mbaas-api": "~9.1.4",
+    "husky": "~1.1.4",
+    "istanbul": "~0.4.5",
     "jshint": "^2.9.2",
-    "linelint": "^1.0.0",
-    "mocha": "^2.4.5",
-    "proxyquire": "^1.7.9",
-    "sinon": "^1.17.4",
-    "fh-mbaas-api": ">=5.13.1"
+    "mocha": "~2.5.3",
+    "prettier": "~1.15.2",
+    "proxyquire": "~1.8.0",
+    "sinon": "^1.17.4"
   },
   "peerDependencies": {
-    "fh-mbaas-api": ">=5.13.1"
+    "fh-mbaas-api": ">=9.0.0"
   }
 }
