@@ -12,13 +12,13 @@ Essentially this module automatically implements the *sync.handleList*,
 ## Install
 
 _NOTE: If you are using fh-mbaas-api v6 or lower you must use the 0.x version of
-this module. fh-mbaas-api v7 and v8 are not supported._
+this module. fh-mbaas-api v7 and above can use 1.0 and newer._
 
 To use this module you must have fh-mbaas-api version 9.0.0 or higher installed
 in your package.json. Install example is below.
 
 ```
-npm install fh-mbaas-api@9 --save
+npm install fh-mbaas-api@7 --save
 
 npm install fh-rest-sync-proxy --save
 ```
@@ -111,7 +111,7 @@ mbaasApi.sync.connect(MONGODB_URL, { /* options */ }, REDIS_URL, function (err) 
       log.info('app started on port: %s', port);
     });
   });
-  
+
 });
 ```
 

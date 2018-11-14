@@ -37,6 +37,6 @@
     "sinon": "^1.17.4"
   },
   "peerDependencies": {
-    "fh-mbaas-api": ">=9.0.0"
+    "fh-mbaas-api": ">=7.0.0"
   }
 }
