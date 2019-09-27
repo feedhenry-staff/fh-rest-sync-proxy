@@ -22,8 +22,11 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
+    "bluebird": "^3.4.7",
     "fh-bunyan": "^0.2.0",
+    "keycloak-auth-utils": "^3.3.0",
     "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "url-join": "^1.1.0",
     "verror": "^1.6.1"
   },

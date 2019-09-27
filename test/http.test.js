@@ -6,7 +6,7 @@ var sinon = require('sinon')
 
 describe(__filename, function () {
 
-  var mod, stubs, opts, resData;
+  var mod, stubs, stub, opts, resData;
 
   beforeEach(function () {
     resData = {
@@ -16,11 +16,17 @@ describe(__filename, function () {
     opts = {
       url: 'http://service.to.call.com'
     };
-
     stubs = {
-      'request': sinon.stub()
-    };
+      'request': sinon.stub(),
+      './keycloak/util': {
+        getKeycloak: function() {
+          return new Promise(resolve => {
+            resolve(stubs['request'])
+          })
+        }
+      }
 
+    };
     mod = proxyquire('../lib/http', stubs);
   });
 
