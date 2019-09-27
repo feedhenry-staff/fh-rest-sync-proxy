@@ -10,7 +10,7 @@ describe(__filename, function () {
   var simpleMod;
   var stubs;
   var id = 'abc';
-  var guid = '12345';
+  var url = 'https://service.to.call.com';
   var dataset = 'dataset';
 
   beforeEach(function () {
@@ -20,7 +20,7 @@ describe(__filename, function () {
     };
 
     mod = proxyquire('../lib/handlers', stubs)(dataset, {
-      guid: guid
+      url: url
     });
   });
 
@@ -62,7 +62,7 @@ describe(__filename, function () {
         expect(data).to.deep.equal(list);
         expect(stubs['./http'].calledOnce).to.be.true;
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
-          guid: guid,
+          url: url,
           method: 'GET',
           params: params,
           path: dataset,
@@ -89,7 +89,7 @@ describe(__filename, function () {
         expect(data).to.deep.equal(item);
         expect(stubs['./http'].calledOnce).to.be.true;
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
-          guid: guid,
+          url: url,
           method: 'GET',
           path: dataset + '/' + id,
           timeout: 25000
@@ -114,7 +114,7 @@ describe(__filename, function () {
         expect(err).to.not.exist;
         expect(stubs['./http'].calledOnce).to.be.true;
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
-          guid: guid,
+          url: url,
           method: 'PUT',
           params: data,
           path: dataset + '/' + id,
@@ -136,7 +136,7 @@ describe(__filename, function () {
         expect(err).to.not.exist;
         expect(stubs['./http'].calledOnce).to.be.true;
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
-          guid: guid,
+          url: url,
           method: 'DELETE',
           path: dataset + '/' + id,
           timeout: 25000
@@ -161,7 +161,7 @@ describe(__filename, function () {
         expect(data).to.deep.equal(data);
         expect(stubs['./http'].calledOnce).to.be.true;
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
-          guid: guid,
+          url: url,
           method: 'POST',
           path: dataset,
           params: data,

@@ -23,6 +23,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "fh-bunyan": "^0.2.0",
+    "request": "^2.88.0",
     "url-join": "^1.1.0",
     "verror": "^1.6.1"
   },

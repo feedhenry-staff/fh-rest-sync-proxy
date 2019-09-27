@@ -35,7 +35,7 @@ var sync = require('fh-rest-sync-proxy');
 
 // Create a sync object that communicates with a service
 var serviceSync = sync({
-  guid: 'jsgduuQ50ZtF6iR3xuaacGvn',
+  url: 'https://route.to.service.com',
   timeout: 15000
 });
 
@@ -83,7 +83,7 @@ app.use(mbaasExpress.errorHandler());
 
 // Create a sync object that communicates with a service
 var serviceSync = mbaasSync({
-  guid: 'jsgduuQ50ZtF6iR3xuaacGvn',
+  url: 'https://route.to.service.com',
   timeout: 15000,
 
   // remove property for a non nested API, e.g /path-to-nested-data-set/orders, vs. /orders

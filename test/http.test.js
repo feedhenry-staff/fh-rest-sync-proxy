@@ -14,53 +14,51 @@ describe(__filename, function () {
     };
 
     opts = {
-      guid: '12345'
+      url: 'http://service.to.call.com'
     };
 
     stubs = {
-      'fh-mbaas-api': {
-        service: sinon.stub()
-      }
+      'request': sinon.stub()
     };
 
     mod = proxyquire('../lib/http', stubs);
   });
 
   it('should return a non 200 status error', function (done) {
-    stubs['fh-mbaas-api'].service.yields(null, resData, {statusCode: 500});
+    stubs['request'].yields(null, {statusCode: 500}, resData );
 
     mod(opts, function (err, failMsg, data) {
       expect(err).to.exist;
       expect(err.toString()).to.contain(
-        'service call to guid "12345" returned 500 status. error: { a: \'b\' }'
+        'service call to guid "http://service.to.call.com" returned 500 status. error: { a: \'b\' }'
       );
       expect(data).to.not.exist;
-      expect(stubs['fh-mbaas-api'].service.getCall(0).args[0]).to.deep.equal(opts);
+      expect(stubs['request'].getCall(0).args[0]).to.deep.equal(opts);
       done();
     });
   });
 
   it('should return an error', function (done) {
-    stubs['fh-mbaas-api'].service.yields(new Error('ECONNRESET'), null, null);
+    stubs['request'].yields(new Error('ECONNRESET'), null, null);
 
     mod(opts, function (err, data) {
       expect(err).to.exist;
       expect(err.toString()).to.contain(
-        'failed to perform call to service "12345": ECONNRESET'
+        'failed to perform call to service "http://service.to.call.com": ECONNRESET'
       );
       expect(data).to.not.exist;
-      expect(stubs['fh-mbaas-api'].service.getCall(0).args[0]).to.deep.equal(opts);
+      expect(stubs['request'].getCall(0).args[0]).to.deep.equal(opts);
       done();
     });
   });
 
   it('should return data', function (done) {
-    stubs['fh-mbaas-api'].service.yields(null, resData, {statusCode: 200});
+    stubs['request'].yields(null,  {statusCode: 200}, resData);
 
     mod(opts, function (err, failMsg, data) {
       expect(err).to.not.exist;
       expect(data).to.deep.equal(resData);
-      expect(stubs['fh-mbaas-api'].service.getCall(0).args[0]).to.deep.equal(opts);
+      expect(stubs['request'].getCall(0).args[0]).to.deep.equal(opts);
       done();
     });
   });
