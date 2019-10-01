@@ -7,6 +7,7 @@
     "after": true,
     "afterEach": true
   },
+  "esversion": 8,
   "curly": true,
   "camelcase": false,
   "evil": false,
@@ -33,7 +34,6 @@
   "newcap": true,
   "quotmark": "single",
   "unused": true,
-  "strict": true,
   "maxparams": 5,
   "maxdepth": 5,
   "maxstatements": 20,

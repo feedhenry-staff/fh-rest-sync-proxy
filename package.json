@@ -22,21 +22,25 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "fh-bunyan": "^0.2.0",
-    "url-join": "^1.1.0",
-    "verror": "^1.6.1"
+    "bluebird": "~3.4.7",
+    "fh-bunyan": "~0.2.0",
+    "keycloak-auth-utils": "~3.3.0",
+    "request": "~2.88.0",
+    "request-promise": "~4.2.4",
+    "url-join": "~1.1.0",
+    "verror": "~1.6.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "istanbul": "^0.4.3",
-    "jshint": "^2.9.2",
-    "linelint": "^1.0.0",
-    "mocha": "^2.4.5",
-    "proxyquire": "^1.7.9",
-    "sinon": "^1.17.4",
-    "fh-mbaas-api": ">=5.13.1"
+    "chai": "~3.5.0",
+    "istanbul": "~0.4.3",
+    "jshint": "~2.10.2",
+    "linelint": "~1.0.0",
+    "mocha": "~2.4.5",
+    "proxyquire": "~1.7.9",
+    "sinon": "~1.17.4",
+    "fh-mbaas-api": "~5.13.1"
   },
   "peerDependencies": {
-    "fh-mbaas-api": ">=5.13.1"
+    "fh-mbaas-api": "~5.13.1"
   }
 }
