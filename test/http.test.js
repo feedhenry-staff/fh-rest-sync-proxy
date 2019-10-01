@@ -33,7 +33,7 @@ describe(__filename, function () {
   it('should return a non 200 status error', function (done) {
     stubs['request'].yields(null, {statusCode: 500}, resData );
 
-    mod(opts, function (err, failMsg, data) {
+    mod({})(opts, function (err, failMsg, data) {
       expect(err).to.exist;
       expect(err.toString()).to.contain(
         'service call to guid "http://service.to.call.com" returned 500 status. error: { a: \'b\' }'
@@ -47,7 +47,7 @@ describe(__filename, function () {
   it('should return an error', function (done) {
     stubs['request'].yields(new Error('ECONNRESET'), null, null);
 
-    mod(opts, function (err, data) {
+    mod({})(opts, function (err, data) {
       expect(err).to.exist;
       expect(err.toString()).to.contain(
         'failed to perform call to service "http://service.to.call.com": ECONNRESET'
@@ -61,7 +61,7 @@ describe(__filename, function () {
   it('should return data', function (done) {
     stubs['request'].yields(null,  {statusCode: 200}, resData);
 
-    mod(opts, function (err, failMsg, data) {
+    mod({})(opts, function (err, failMsg, data) {
       expect(err).to.not.exist;
       expect(data).to.deep.equal(resData);
       expect(stubs['request'].getCall(0).args[0]).to.deep.equal(opts);
@@ -69,5 +69,30 @@ describe(__filename, function () {
     });
   });
 
+  it('should use the provided injectHeadersFn', (done) => {
+    stubs['request'].yields(null,  {statusCode: 200}, resData);
 
+    const args = {
+      url: 'http://service.to.call.com',
+      timeout: 10000
+    }
+
+    const headers = {
+      'Authorization': 'Bearer thisisafaketoken'
+    }
+
+    mod({
+      injectHeadersFn: () => {
+        return Promise.resolve(headers)
+      }
+    })(args, function (err, failMsg, data) {
+      expect(err).to.not.exist;
+      expect(data).to.deep.equal(resData);
+      expect(stubs['request'].getCall(0).args[0]).to.deep.equal({
+        ...args,
+        headers
+      });
+      done();
+    });
+  })
 });

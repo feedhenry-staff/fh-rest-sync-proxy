@@ -8,20 +8,24 @@ describe(__filename, function () {
 
   var mod;
   var simpleMod;
+  var httpStub;
   var stubs;
   var id = 'abc';
   var url = 'https://service.to.call.com';
   var dataset = 'dataset';
 
-  beforeEach(async function () {
+  beforeEach(function () {
+    httpStub = sinon.stub()
     stubs = {
-      './http': sinon.stub(),
+      './http': sinon.stub().returns(httpStub),
       './build-route': sinon.stub()
     };
 
-    mod = await proxyquire('../lib/handlers', stubs)(dataset, {
+    mod = proxyquire('../lib/handlers', stubs)(dataset, {
       url: url
     });
+
+    console.log(mod)
   });
 
   describe('#handleList', function () {
@@ -30,7 +34,7 @@ describe(__filename, function () {
         type: 'sync'
       };
 
-      stubs['./http'].yields(new Error('oops, list error'), null);
+      httpStub.yields(new Error('oops, list error'), null);
       stubs['./build-route'].returns(dataset);
 
       mod.handleList(dataset, params, function (err, data) {
@@ -54,18 +58,17 @@ describe(__filename, function () {
         type: 'sync'
       };
 
-      stubs['./http'].yields(null, null, list);
+      httpStub.yields(null, null, list);
       stubs['./build-route'].returns(dataset);
 
       mod.handleList(dataset, params, function (err, data) {
         expect(err).to.not.exist;
         expect(data).to.deep.equal(list);
-        expect(stubs['./http'].calledOnce).to.be.true;
-        expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
+        expect(httpStub.calledOnce).to.be.true;
+        expect(httpStub.getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset',
           method: 'GET',
           qs: params,
-          headers: {},
           timeout: 25000
         });
 
@@ -81,17 +84,16 @@ describe(__filename, function () {
         test: 'data'
       };
 
-      stubs['./http'].yields(null, null, item);
+      httpStub.yields(null, null, item);
       stubs['./build-route'].returns(dataset);
 
       mod.handleRead(dataset, id, function (err, data) {
         expect(err).to.not.exist;
         expect(data).to.deep.equal(item);
-        expect(stubs['./http'].calledOnce).to.be.true;
-        expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
+        expect(httpStub.calledOnce).to.be.true;
+        expect(httpStub.getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset/abc',
           method: 'GET',
-          headers: {},
           timeout: 25000
         });
 
@@ -107,16 +109,15 @@ describe(__filename, function () {
         test: 'data'
       };
 
-      stubs['./http'].yields(null);
+      httpStub.yields(null);
       stubs['./build-route'].returns(dataset);
 
       mod.handleUpdate(dataset, id, data, function (err) {
         expect(err).to.not.exist;
-        expect(stubs['./http'].calledOnce).to.be.true;
-        expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
+        expect(httpStub.calledOnce).to.be.true;
+        expect(httpStub.getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset/abc',
           method: 'PUT',
-          headers: {},
           json: data,
           timeout: 25000
         });
@@ -129,16 +130,15 @@ describe(__filename, function () {
 
   describe('#handleDelete', function () {
     it('should delete a record', function (done) {
-      stubs['./http'].yields(null);
+      httpStub.yields(null);
       stubs['./build-route'].returns(dataset);
 
       mod.handleDelete(dataset, id, function (err) {
         expect(err).to.not.exist;
-        expect(stubs['./http'].calledOnce).to.be.true;
-        expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
+        expect(httpStub.calledOnce).to.be.true;
+        expect(httpStub.getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset/abc',
           method: 'DELETE',
-          headers: {},
           timeout: 25000
         });
 
@@ -153,54 +153,16 @@ describe(__filename, function () {
         key: 'value'
       };
 
-      stubs['./http'].yields(null, null, data);
+      httpStub.yields(null, null, data);
       stubs['./build-route'].returns(dataset);
 
       mod.handleCreate(dataset, data, function (err, data) {
         expect(err).to.not.exist;
         expect(data).to.deep.equal(data);
-        expect(stubs['./http'].calledOnce).to.be.true;
-        expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
+        expect(httpStub.calledOnce).to.be.true;
+        expect(httpStub.getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset',
           method: 'POST',
-          headers: {},
-          json: data,
-          timeout: 25000
-        });
-
-        done();
-      });
-    });
-  });
-  describe('#handleCreate with Additional Headers', async function () {
-    stubs = {
-      './http': sinon.stub(),
-      './build-route': sinon.stub()
-    };
-    mod = await proxyquire('../lib/handlers', stubs)(dataset, {
-      url: url,
-      injectHeadersFn : function() {
-        return new Promise((resolve) => {
-          resolve({headerKey: 'headerVal'});
-        });
-      }
-    });
-    it('should create a record', function (done) {
-      var data = {
-        key: 'value'
-      };
-
-      stubs['./http'].yields(null, null, data);
-      stubs['./build-route'].returns(dataset);
-
-      mod.handleCreate(dataset, data, function (err, data) {
-        expect(err).to.not.exist;
-        expect(data).to.deep.equal(data);
-        expect(stubs['./http'].calledOnce).to.be.true;
-        expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
-          url: 'https://service.to.call.com/dataset',
-          method: 'POST',
-          headers: {headerKey: 'headerVal'},
           json: data,
           timeout: 25000
         });
