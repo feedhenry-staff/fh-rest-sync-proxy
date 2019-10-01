@@ -15,7 +15,7 @@ describe(__filename, function () {
     };
 
     opts = {
-      guid: '123'
+      url: 'http://example.url.com'
     };
 
     stubs = {
