@@ -45,6 +45,8 @@ describe(__filename, function () {
 
   describe('#initDataset', function () {
 
+
+
     it('should fail to init', function (done) {
       stubs['fh-mbaas-api'].sync.init.yields(new Error('sync init fail'));
 
@@ -97,4 +99,34 @@ describe(__filename, function () {
 
   });
 
+
+
+});
+
+describe('#Missing fh-mbaas-api', function () {
+
+
+
+  it('should throw error', function (done) {
+    var stubs = {
+      'fh-mbaas-api': null,
+      './handlers': sinon.spy(function () {
+        return {
+          handleList: sinon.stub(),
+          handleUpdate: sinon.stub(),
+          handleRead: sinon.stub(),
+          handleDelete: sinon.stub(),
+          handleCreate: sinon.stub()
+        };
+      })
+    };
+    var opts = {};
+    try{
+      proxyquire('../lib/sync', stubs)(opts);
+    }
+    catch(err){
+      expect (err.message).to.equal('fh-mbaas-api module not found. please run "npm install fh-mbaas-api@5.X --save" in the project root: Cannot find module \'fh-mbaas-api\'');
+      done();
+    }
+  });
 });

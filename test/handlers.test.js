@@ -13,13 +13,13 @@ describe(__filename, function () {
   var url = 'https://service.to.call.com';
   var dataset = 'dataset';
 
-  beforeEach(function () {
+  beforeEach(async function () {
     stubs = {
       './http': sinon.stub(),
       './build-route': sinon.stub()
     };
 
-    mod = proxyquire('../lib/handlers', stubs)(dataset, {
+    mod = await proxyquire('../lib/handlers', stubs)(dataset, {
       url: url
     });
   });
@@ -65,6 +65,7 @@ describe(__filename, function () {
           url: 'https://service.to.call.com/dataset',
           method: 'GET',
           qs: params,
+          headers: {},
           timeout: 25000
         });
 
@@ -90,6 +91,7 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset/abc',
           method: 'GET',
+          headers: {},
           timeout: 25000
         });
 
@@ -114,6 +116,7 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset/abc',
           method: 'PUT',
+          headers: {},
           json: data,
           timeout: 25000
         });
@@ -135,6 +138,7 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset/abc',
           method: 'DELETE',
+          headers: {},
           timeout: 25000
         });
 
@@ -159,6 +163,7 @@ describe(__filename, function () {
         expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset',
           method: 'POST',
+          headers: {},
           json: data,
           timeout: 25000
         });
@@ -167,5 +172,41 @@ describe(__filename, function () {
       });
     });
   });
+  describe('#handleCreate with Additional Headers', async function () {
+    stubs = {
+      './http': sinon.stub(),
+      './build-route': sinon.stub()
+    };
+    mod = await proxyquire('../lib/handlers', stubs)(dataset, {
+      url: url,
+      injectHeadersFn : function() {
+        return new Promise((resolve) => {
+          resolve({headerKey: 'headerVal'});
+        });
+      }
+    });
+    it('should create a record', function (done) {
+      var data = {
+        key: 'value'
+      };
 
+      stubs['./http'].yields(null, null, data);
+      stubs['./build-route'].returns(dataset);
+
+      mod.handleCreate(dataset, data, function (err, data) {
+        expect(err).to.not.exist;
+        expect(data).to.deep.equal(data);
+        expect(stubs['./http'].calledOnce).to.be.true;
+        expect(stubs['./http'].getCall(0).args[0]).to.deep.equal({
+          url: 'https://service.to.call.com/dataset',
+          method: 'POST',
+          headers: {headerKey: 'headerVal'},
+          json: data,
+          timeout: 25000
+        });
+
+        done();
+      });
+    });
+  });
 });

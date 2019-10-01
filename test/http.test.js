@@ -69,34 +69,5 @@ describe(__filename, function () {
     });
   });
 
-  it('should test adding additional header', function(done) {
-    stubs['request'].yields(null,  {statusCode: 200}, resData);
-    opts.injectHeadersFn = function() {
-      return new Promise((resolve) => {
-        resolve({headerKey: 'headerVal'});
-      });
-    };
-    mod(opts, function(err, failMsg, data) {
-      sinon.assert.calledWith(stubs['request'], { headers: { headerKey: "headerVal"}, url: "http://service.to.call.com"});
-      expect(err).to.not.exist;
-      expect(data).to.deep.equal(resData);
-      done();
-    });
-  });
-
-  it('should test adding additional header function with reject', function(done) {
-    stubs['request'].yields(null,  {statusCode: 200}, resData);
-    opts.injectHeadersFn = function() {
-      return new Promise((resolve, reject) => {
-        reject('Error');
-      });
-    };
-    mod(opts, function(err, failMsg, data) {
-      sinon.assert.calledWith(stubs['request'], { headers: {}, url: "http://service.to.call.com"});
-      expect(err).to.not.exist;
-      expect(data).to.deep.equal(resData);
-      done();
-    });
-  });
 
 });
