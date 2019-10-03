@@ -69,7 +69,8 @@ describe(__filename, function () {
           url: 'https://service.to.call.com/dataset',
           method: 'GET',
           qs: params,
-          timeout: 25000
+          timeout: 25000,
+          json: true
         });
 
         done();
@@ -94,7 +95,8 @@ describe(__filename, function () {
         expect(httpStub.getCall(0).args[0]).to.deep.equal({
           url: 'https://service.to.call.com/dataset/abc',
           method: 'GET',
-          timeout: 25000
+          timeout: 25000,
+          json: true
         });
 
         done();
