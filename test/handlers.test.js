@@ -37,7 +37,7 @@ describe(__filename, function () {
       httpStub.yields(new Error('oops, list error'), null);
       stubs['./build-route'].returns(dataset);
 
-      mod.handleList(dataset, params, function (err, data) {
+      mod.handleList(dataset, params, {}, function (err, data) {
         expect(err).to.exist;
         expect(err.msg).to.contain(
           'failed to perform "list" for dataset "dataset" using endpoint "dataset": oops, list error'
@@ -61,7 +61,7 @@ describe(__filename, function () {
       httpStub.yields(null, null, list);
       stubs['./build-route'].returns(dataset);
 
-      mod.handleList(dataset, params, function (err, data) {
+      mod.handleList(dataset, params, {}, function (err, data) {
         expect(err).to.not.exist;
         expect(data).to.deep.equal(list);
         expect(httpStub.calledOnce).to.be.true;
@@ -88,7 +88,7 @@ describe(__filename, function () {
       httpStub.yields(null, null, item);
       stubs['./build-route'].returns(dataset);
 
-      mod.handleRead(dataset, id, function (err, data) {
+      mod.handleRead(dataset, id, {}, function (err, data) {
         expect(err).to.not.exist;
         expect(data).to.deep.equal(item);
         expect(httpStub.calledOnce).to.be.true;
@@ -114,7 +114,7 @@ describe(__filename, function () {
       httpStub.yields(null);
       stubs['./build-route'].returns(dataset);
 
-      mod.handleUpdate(dataset, id, data, function (err) {
+      mod.handleUpdate(dataset, id, data, {}, function (err) {
         expect(err).to.not.exist;
         expect(httpStub.calledOnce).to.be.true;
         expect(httpStub.getCall(0).args[0]).to.deep.equal({
@@ -135,7 +135,7 @@ describe(__filename, function () {
       httpStub.yields(null);
       stubs['./build-route'].returns(dataset);
 
-      mod.handleDelete(dataset, id, function (err) {
+      mod.handleDelete(dataset, id, {}, function (err) {
         expect(err).to.not.exist;
         expect(httpStub.calledOnce).to.be.true;
         expect(httpStub.getCall(0).args[0]).to.deep.equal({
@@ -158,7 +158,7 @@ describe(__filename, function () {
       httpStub.yields(null, null, data);
       stubs['./build-route'].returns(dataset);
 
-      mod.handleCreate(dataset, data, function (err, data) {
+      mod.handleCreate(dataset, data, {}, function (err, data) {
         expect(err).to.not.exist;
         expect(data).to.deep.equal(data);
         expect(httpStub.calledOnce).to.be.true;
